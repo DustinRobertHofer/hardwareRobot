@@ -1,4 +1,6 @@
 from math import cos, sin, pi
+from hardware.motor import Motor  # Import Motor class for type hints
+
 
 class State:
     def __init__(self):
@@ -11,8 +13,18 @@ class State:
         self.prev_theta = 0.0
         self.TURN_THRESHOLD = 0.01  # About 0.57 degrees in radians
         
+        # Motors for distance data
+        self.left_motor = None
+        self.right_motor = None
         
+        # Default obstacle data
+        self.obstacle_detected = False
+        self.obstacle_distance = float('inf')
         
+    def set_motors(self, left_motor, right_motor):
+        """Set motor objects for direct distance measurement"""
+        self.left_motor = left_motor
+        self.right_motor = right_motor
         
     def update(self, sensor_data):
         """Update state estimation using sensor data"""
@@ -27,13 +39,28 @@ class State:
         # Check if turning
         is_turning = abs(self.theta - self.prev_theta) > self.TURN_THRESHOLD
         
-        # Only update position if not turning
-        if not is_turning and wheel_data['forward_motion'] != 0:
+        # Get distance data directly from motors if available
+        forward_motion = 0
+        if self.left_motor and self.right_motor:
+            delta_left = self.left_motor.get_delta_distance()
+            delta_right = self.right_motor.get_delta_distance()
+            forward_motion = (delta_left + delta_right) / 2
+        else:
+            # Fall back to sensor data if motors not set
             forward_motion = wheel_data['forward_motion']
+            
+        # Only update position if not turning
+        if not is_turning and forward_motion != 0:
             self.x += forward_motion * cos(self.theta)
             self.y += forward_motion * sin(self.theta)
             
-
+        # Update obstacle information
+        if 'distance_forward' in sensor_data:
+            self.obstacle_distance = sensor_data['distance_forward']
+            self.obstacle_detected = self.obstacle_distance < 0.5  # Consider obstacles closer than 0.5m
+        else:
+            self.obstacle_detected = False
+            self.obstacle_distance = float('inf')
     
     def normalize_angle(self, angle):
         """Normalize angle to [-pi, pi]"""

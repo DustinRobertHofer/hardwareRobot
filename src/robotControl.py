@@ -20,6 +20,10 @@ class RobotController:
         self.motion_controller = MotionController()
         self.navigator = Navigator()  # Pass None for robot and 0 for timestep (not used in hardware)
         
+        # Set up motor references for state
+        left_motor, right_motor = self.motion_controller.get_motors()
+        self.state.set_motors(left_motor, right_motor)
+        
         # Set the cleaning area and navigation parameters
         self.navigator.waypoint_threshold = NAVIGATION_PARAMS['waypoint_threshold']
         self.navigator.heading_threshold = NAVIGATION_PARAMS['heading_threshold']
@@ -96,7 +100,7 @@ class RobotController:
         self.sensor_manager.update()
         sensor_data = self.sensor_manager.get_sensor_data()
         
-        # Update state
+        # Update state - State will get distance data directly from motors
         self.state.update(sensor_data)
         current_state = self.state.get_position()
         

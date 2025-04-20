@@ -61,6 +61,11 @@ class MotionController:
         """Limit a value to specified range."""
         return max(min_value, min(value, max_value))
     
+    def get_distance(self):
+        """Get distance traveled by the robot."""
+        return self.left_motor.get_distance()
+    
+
     def cleanup(self):
         """Clean up resources."""
         self.stop()

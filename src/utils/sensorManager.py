@@ -1,6 +1,7 @@
 import time
 from hardware.laserRange import LaserRangeFinder
 from hardware.compass import Compass
+
 from robotConfig import SENSOR_PINS
 class SensorManager:
     """Sensor manager for Raspberry Pi hardware implementation."""
