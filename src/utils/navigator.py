@@ -23,10 +23,6 @@ class Navigator:
         self.MAX_LINEAR_SPEED = MOTION_PARAMS['max_linear_speed']
         self.MAX_ANGULAR_SPEED = MOTION_PARAMS['max_angular_speed']
         
-        # Add missing parameters for obstacle avoidance
-        self.SAFE_DISTANCE = NAVIGATION_PARAMS['safe_distance']
-        self.AVOIDANCE_TURN_ANGLE = pi/2  # 90 degrees in radians, perpendicular to current path
-        self.avoidance_direction = 1  # 1 for left, -1 for right
         
     def normalize_angle(self, angle):
         """
@@ -69,27 +65,7 @@ class Navigator:
         self.path_index = 0
         self.current_goal = self.current_path[self.path_index] if waypoints else None
         
-    def generate_avoidance_waypoint(self, x, y, theta, target):
-        """
-        Generate a temporary waypoint to help avoid an obstacle.
-        
-        Args:
-            x: Current x position
-            y: Current y position
-            theta: Current heading in radians
-            target: Target waypoint dictionary
-            
-        Returns:
-            Waypoint dictionary with 'x' and 'y' keys
-        """
-        # Calculate perpendicular point at a safe distance
-        perp_angle = theta + (self.AVOIDANCE_TURN_ANGLE * self.avoidance_direction)
-        safe_x = x + self.SAFE_DISTANCE * cos(perp_angle)
-        safe_y = y + self.SAFE_DISTANCE * sin(perp_angle)
-        
-        # Create waypoint slightly ahead in the avoidance direction
-        return {'x': safe_x, 'y': safe_y}
-        
+   
     def get_next_command(self, current_position):
         """
         Get the next movement command to reach the goal.

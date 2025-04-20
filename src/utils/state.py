@@ -11,10 +11,8 @@ class State:
         self.prev_theta = 0.0
         self.TURN_THRESHOLD = 0.01  # About 0.57 degrees in radians
         
-        # Obstacle detection parameters
-        self.obstacle_detected = False
-        self.obstacle_distance = float('inf')
-        self.OBSTACLE_THRESHOLD = 0.5  # Distance in meters to consider as obstacle
+        
+        
         
     def update(self, sensor_data):
         """Update state estimation using sensor data"""
@@ -35,13 +33,7 @@ class State:
             self.x += forward_motion * cos(self.theta)
             self.y += forward_motion * sin(self.theta)
             
-        # Update obstacle detection
-        if 'distance' in sensor_data:
-            self.obstacle_distance = sensor_data['distance']
-            self.obstacle_detected = self.obstacle_distance < self.OBSTACLE_THRESHOLD
-        else:
-            self.obstacle_detected = False
-            self.obstacle_distance = float('inf')
+
     
     def normalize_angle(self, angle):
         """Normalize angle to [-pi, pi]"""
