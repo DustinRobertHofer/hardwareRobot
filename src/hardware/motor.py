@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-from robotConfig import MOTOR_PINS
+from robotConfig import MOTOR_PINS, MOTION_PARAMS
 
 # Define GPIO pins for motor 1
 Dir_pin1 = MOTOR_PINS['left_motor']['dir_pin']
@@ -20,6 +20,43 @@ GPIO.setup(Step_pin2, GPIO.OUT)
 # Set direction: true = backwards, false = forwards
 GPIO.output(Dir_pin1, False)
 GPIO.output(Dir_pin2, True)
+
+# Global variables to track motor states
+current_velocity = 0
+step_delay = 0.002  # Default delay
+
+def set_velocity(velocity):
+    """
+    Set the velocity of the motors.
+    
+    Args:
+        velocity (float): Desired velocity. Positive for forward, negative for backward.
+                          Value should be between -1.0 and 1.0 representing percentage of max speed.
+    """
+    global current_velocity, step_delay
+    current_velocity = velocity
+    
+    # Set direction based on velocity sign
+    if velocity >= 0:
+        GPIO.output(Dir_pin1, False)  # Forward for motor 1
+        GPIO.output(Dir_pin2, True)   # Forward for motor 2
+    else:
+        GPIO.output(Dir_pin1, True)   # Backward for motor 1
+        GPIO.output(Dir_pin2, False)  # Backward for motor 2
+    
+    # Calculate step delay based on velocity magnitude
+    abs_velocity = abs(velocity)
+    
+    if abs_velocity == 0:
+        step_delay = float('inf')  # Stop motors
+    else:
+        # Map velocity (0-1) to delay range (0.01s to 0.001s)
+        # Lower delay = faster speed
+        min_delay = 0.001  # Fastest speed
+        max_delay = 0.01   # Slowest speed
+        step_delay = max_delay - abs_velocity * (max_delay - min_delay)
+    
+    return step_delay
 
 # step motor forward 200 steps
 def step_motors(steps, delay):
