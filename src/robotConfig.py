@@ -3,18 +3,15 @@
 # Motor pins configuration
 MOTOR_PINS = {
     'left_motor': {
-        'pwm_pin': 12,      # PWM pin for left motor speed control
-        'dir1_pin': 16,     # Direction pin 1 for left motor
-        'dir2_pin': 18,     # Direction pin 2 for left motor
-        'encoder_a': 23,    # Encoder A pin for left motor
-        'encoder_b': 24     # Encoder B pin for left motor
+  
+        'dir_pin': 17,     # Direction pin for left motor
+        'step_pin': 27,     # step pin for left motor
+
     },
     'right_motor': {
-        'pwm_pin': 13,      # PWM pin for right motor speed control
-        'dir1_pin': 19,     # Direction pin 1 for right motor
-        'dir2_pin': 26,     # Direction pin 2 for right motor
-        'encoder_a': 5,     # Encoder A pin for right motor
-        'encoder_b': 6      # Encoder B pin for right motor
+        
+        'dir_pin': 20,     # Direction pin for right motor
+        'step_pin': 21,     # step pin for right motor
     }
 }
 
