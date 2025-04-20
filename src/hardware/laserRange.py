@@ -1,14 +1,13 @@
 import time
 import serial
 import smbus
-from robotConfig import SENSOR_PINS
 
 class LaserRangeFinder:
     """Laser range finder implementation for Raspberry Pi."""
     
-    def __init__(self):
+    def __init__(self, config):
         """Initialize laser range finder with serial or I2C interface."""
-        self.config = SENSOR_PINS['laser_range']
+        self.config = config
         self.interface_type = self._detect_interface_type()
         
         # Initialize the appropriate interface

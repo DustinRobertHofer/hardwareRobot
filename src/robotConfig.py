@@ -20,7 +20,20 @@ MOTOR_PINS = {
 
 # Sensor pins configuration
 SENSOR_PINS = {
-    'laser_range': {
+    'laser_range_forward': {
+        'rx_pin': 20,       # Serial RX pin for laser range finder (or use None for I2C/hardware UART)
+        'tx_pin': 21,       # Serial TX pin for laser range finder (or use None for I2C/hardware UART)
+        'uart_port': '/dev/ttyAMA0',  # Hardware UART port (alternative to GPIO pins)
+        'i2c_address': 0x62   # I2C address if using I2C interface
+    },
+    ## TODO: Add left and right laser range finder pins !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    'laser_range_left': {
+        'rx_pin': 20,       # Serial RX pin for laser range finder (or use None for I2C/hardware UART)
+        'tx_pin': 21,       # Serial TX pin for laser range finder (or use None for I2C/hardware UART)
+        'uart_port': '/dev/ttyAMA0',  # Hardware UART port (alternative to GPIO pins)
+        'i2c_address': 0x62   # I2C address if using I2C interface
+    },
+    'laser_range_right': {
         'rx_pin': 20,       # Serial RX pin for laser range finder (or use None for I2C/hardware UART)
         'tx_pin': 21,       # Serial TX pin for laser range finder (or use None for I2C/hardware UART)
         'uart_port': '/dev/ttyAMA0',  # Hardware UART port (alternative to GPIO pins)
@@ -56,7 +69,8 @@ NAVIGATION_PARAMS = {
     'waypoint_threshold': 0.1,    # meters (distance to consider waypoint reached)
     'heading_threshold': 0.05,    # radians (angle to consider heading aligned)
     'turn_threshold': 0.1,        # radians (angle to consider turn in place)
-    'safe_distance': 0.3          # meters (minimum safe distance to obstacles)
+    'safe_distance': 0.3,          # meters (minimum safe distance to obstacles)
+    'safe_side_distance': 0.2     # meters (minimum safe distance to side obstacles)
 }
 
 # System parameters

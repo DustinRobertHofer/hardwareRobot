@@ -16,9 +16,9 @@ class RobotController:
         
         # Initialize core components
         self.sensor_manager = SensorManager()
-        self.state = State(None, 0)  # Pass None for robot and 0 for timestep (not used in hardware)
+        self.state = State()  # Pass None for robot and 0 for timestep (not used in hardware)
         self.motion_controller = MotionController()
-        self.navigator = Navigator(None, 0)  # Pass None for robot and 0 for timestep (not used in hardware)
+        self.navigator = Navigator()  # Pass None for robot and 0 for timestep (not used in hardware)
         
         # Set the cleaning area and navigation parameters
         self.navigator.waypoint_threshold = NAVIGATION_PARAMS['waypoint_threshold']
@@ -38,7 +38,7 @@ class RobotController:
         
         print("Robot controller initialization complete")
     
-    def _signal_handler(self, sig, frame):
+    def _signal_handler(self):
         """Handle system signals for clean shutdown."""
         print("\nShutting down robot...")
         self.cleanup()
@@ -71,8 +71,8 @@ class RobotController:
             return False
             
         # Stop if obstacle is too close
-        if sensor_data['distance'] < NAVIGATION_PARAMS['safe_distance']:
-            print(f"OBSTACLE DETECTED at {sensor_data['distance']:.2f}m! Stopping robot.")
+        if sensor_data['distance_forward'] < NAVIGATION_PARAMS['safe_distance'] or sensor_data['distance_left'] < NAVIGATION_PARAMS['safe_side_distance'] or sensor_data['distance_right'] < NAVIGATION_PARAMS['safe_side_distance']:
+            print(f"OBSTACLE DETECTED at {sensor_data['distance_forward']:.2f}m! Stopping robot.")
             self.motion_controller.stop()
             return True
         

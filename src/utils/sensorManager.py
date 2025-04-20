@@ -1,15 +1,17 @@
 import time
 from hardware.laserRange import LaserRangeFinder
-from hardware.digitalCompass import Compass
-
+from hardware.compass import Compass
+from robotConfig import SENSOR_PINS
 class SensorManager:
     """Sensor manager for Raspberry Pi hardware implementation."""
     
     def __init__(self):
         """Initialize all sensors for Raspberry Pi."""
         # Initialize sensors
-        self.laser_range = PiLaserRangeFinder()
-        self.compass = PiCompass()
+        self.laser_range_forward = LaserRangeFinder(SENSOR_PINS['laser_range_forward'])
+        self.laser_range_left = LaserRangeFinder(SENSOR_PINS['laser_range_left'])
+        self.laser_range_right = LaserRangeFinder(SENSOR_PINS['laser_range_right'])
+        self.compass = Compass(SENSOR_PINS['compass'])
         
         # Store latest sensor data
         self.sensor_data = {}
@@ -39,7 +41,9 @@ class SensorManager:
         self.last_update_time = current_time
         
         # Get laser range finder reading
-        distance = self.laser_range.get_distance()
+        distance_forward = self.laser_range_forward.get_distance()
+        distance_left = self.laser_range_left.get_distance()
+        distance_right = self.laser_range_right.get_distance()
         
         # Get compass heading
         compass_heading = self.compass.get_bearing()
@@ -51,12 +55,22 @@ class SensorManager:
         }
         
         # Only include distance data if sensor is available
-        if distance is not None:
-            self.sensor_data['distance'] = distance
+        if distance_forward is not None:
+            self.sensor_data['distance_forward'] = distance_forward
+        else:
+            self.sensor_data['distance_forward'] = 1.0
+        if distance_left is not None:
+            self.sensor_data['distance_left'] = distance_left
+        else:
+            self.sensor_data['distance_left'] = 1.0
+        if distance_right is not None:
+            self.sensor_data['distance_right'] = distance_right
+        else:
+            self.sensor_data['distance_right'] = 1.0
     
     def set_wheel_data(self, left_motor, right_motor):
-        """Update wheel data from motor encoders."""
-        # Get delta distances from motor encoders
+        """Update wheel data from motor ."""
+        # Get delta distances from motor 
         delta_left = left_motor.get_delta_distance()
         delta_right = right_motor.get_delta_distance()
         
@@ -82,5 +96,7 @@ class SensorManager:
     
     def cleanup(self):
         """Clean up all sensor resources."""
-        self.laser_range.cleanup()
+        self.laser_range_forward.cleanup()
+        self.laser_range_left.cleanup()
+        self.laser_range_right.cleanup()
         self.compass.cleanup() 

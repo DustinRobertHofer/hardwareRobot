@@ -1,16 +1,15 @@
 import math
 import time
 import smbus
-from robotConfig import SENSOR_PINS
 
 class Compass:
     """Digital compass implementation for Raspberry Pi using HMC5883L."""
     
-    def __init__(self):
+    def __init__(self, config):
         """Initialize digital compass with I2C interface."""
         try:
             self.i2c_bus = smbus.SMBus(1)  # Use I2C bus 1 on Raspberry Pi
-            self.compass_addr = SENSOR_PINS['compass']['address']
+            self.compass_addr = config['address']
             
             # Initialize the compass
             self._setup_compass()
