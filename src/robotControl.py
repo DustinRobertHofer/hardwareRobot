@@ -92,16 +92,15 @@ class RobotController:
         
         self.last_update_time = current_time
         
-        # Get motor objects for encoder data
-        left_motor, right_motor = self.motion_controller.get_motors()
+        # Get wheel data from motors
+        wheel_data = self.motion_controller.get_wheel_data()
         
         # Update sensor readings
-        self.sensor_manager.set_wheel_data(left_motor, right_motor)
-        self.sensor_manager.update()
+        self.sensor_manager.update(wheel_data)
         sensor_data = self.sensor_manager.get_sensor_data()
         
         # Update state - State will get distance data directly from motors
-        self.state.update(sensor_data)
+        self.state.update(sensor_data, wheel_data)
         current_state = self.state.get_position()
         
         # Check for obstacles

@@ -53,9 +53,16 @@ class MotionController:
         self.left_motor.stop()
         self.right_motor.stop()
     
-    def get_motors(self):
-        """Get motor objects for encoder reading."""
-        return self.left_motor, self.right_motor
+    def get_wheel_data(self):
+        """Get wheel data from motors."""
+        left_distance = self.left_motor.get_distance()
+        right_distance = self.right_motor.get_distance()
+        forward_distance = (left_distance + right_distance) / 2
+        return {
+            'left_distance': left_distance,
+            'right_distance': right_distance,
+            'forward_distance': forward_distance
+        }
     
     def _limit_value(self, value, min_value, max_value):
         """Limit a value to specified range."""
