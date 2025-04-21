@@ -22,11 +22,13 @@ speed_lock1 = threading.Lock()
 speed_lock2 = threading.Lock()
 motor1_speed_rpm = 0  # Motor 1 speed in RPM
 motor2_speed_rpm = 0  # Motor 2 speed in RPM
+motor1_steps = 0
+motor2_steps = 0
 
 running = True
 
 def run_motor1_continuously():
-    global motor1_speed_rpm, running
+    global motor1_speed_rpm, running, motor1_steps, direction1
 
     while running:
         with speed_lock1:
@@ -42,13 +44,20 @@ def run_motor1_continuously():
         delay = 60.0 / (steps_per_rev * speed * 2)  # Half-period for pulses
 
         GPIO.output(Step_pin1, GPIO.HIGH)
-        print("Stepping motor 1")
+        #print("Stepping motor 1")
         time.sleep(delay)
         GPIO.output(Step_pin1, GPIO.LOW)
         time.sleep(delay)
 
+        # step logging
+        if direction1 == 'CW':
+            motor1_steps += 1
+        else:
+            motor1_steps -= 1
+        print(f"Motor 1 steps: {motor1_steps}")
+
 def run_motor2_continuously():
-    global motor2_speed_rpm, running
+    global motor2_speed_rpm, running, motor2_steps, direction2
 
     while running:
         with speed_lock2:
@@ -64,46 +73,52 @@ def run_motor2_continuously():
         delay = 60.0 / (steps_per_rev * speed * 2)  # Half-period for pulses
 
         GPIO.output(Step_pin2, GPIO.HIGH)
-        print("Stepping motor 2")
+        #print("Stepping motor 2")
         time.sleep(delay)
         GPIO.output(Step_pin2, GPIO.LOW)
         time.sleep(delay)
 
+        # step logging
+        if direction2 == 'CW':
+            motor2_steps += 1
+        else:
+            motor2_steps -= 1
+        print(f"Motor 2 steps: {motor2_steps}")
 
 
 def set_motor1_speed(speed_rpm):
-    global motor1_speed_rpm
+    global motor1_speed_rpm, direction1
     # Determine direction of rotation
     if speed_rpm > 0:
-        direction = 'CW'
+        direction1 = 'CW'
     else:
-        direction = 'CCW'
+        direction1 = 'CCW'
         speed_rpm = -speed_rpm
 
     with speed_lock1:
         motor1_speed_rpm = speed_rpm
-        GPIO.output(Dir_pin1, GPIO.HIGH if direction == 'CW' else GPIO.LOW)
-        print("Setting motor 1 direction to", direction)
+        GPIO.output(Dir_pin1, GPIO.HIGH if direction1 == 'CW' else GPIO.LOW)
+        #print("Setting motor 1 direction to", direction)
 
 def set_motor2_speed(speed_rpm):
-    global motor2_speed_rpm
+    global motor2_speed_rpm, direction2
     # Determine direction of rotation
     if speed_rpm > 0:
-        direction = 'CW'
+        direction2 = 'CW'
     else:
-        direction = 'CCW'
+        direction2 = 'CCW'
         speed_rpm = -speed_rpm
 
     with speed_lock2:
         motor2_speed_rpm = speed_rpm
-        GPIO.output(Dir_pin2, GPIO.HIGH if direction == 'CW' else GPIO.LOW)
-        print("Setting motor 2 direction to", direction)
+        GPIO.output(Dir_pin2, GPIO.HIGH if direction2 == 'CW' else GPIO.LOW)
+        #print("Setting motor 2 direction to", direction)
 
 if __name__ == "__main__":
     try:
         # Set initial direction
-        GPIO.output(Dir_pin1, False)
-        GPIO.output(Dir_pin2, False)
+        #GPIO.output(Dir_pin1, False)
+        #GPIO.output(Dir_pin2, False)
         
         # Start motor control threads
         motor1_thread = threading.Thread(target=run_motor1_continuously, daemon=True)
@@ -142,5 +157,5 @@ if __name__ == "__main__":
         # Clean up
         running = False
         time.sleep(0.5)  # Give the threads time to exit
-        GPIO.cleanup()
+        #GPIO.cleanup()
         print("Cleaned up GPIO.")

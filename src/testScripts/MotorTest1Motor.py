@@ -41,8 +41,7 @@ def run_motor_continuously():
         time.sleep(delay)
 
 
-# Set direction: true = backwards, false = forwards
-GPIO.output(Dir_pin1, False)
+
 
 def set_motor_speed(speed_rpm):
     global motor_speed_rpm
