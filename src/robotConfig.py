@@ -1,40 +1,43 @@
 # Raspberry Pi Hardware Configuration for Robot Control
 
+# Sensor Mode
+SENSOR_MODE = {
+    'Three_lasers': False,
+    'One_laser': True,
+    'No_lasers': False
+}
+
 # Motor pins configuration
 MOTOR_PINS = {
     'left_motor': {
-  
         'dir_pin': 17,     # Direction pin for left motor
-        'step_pin': 27,     # step pin for left motor
-
+        'step_pin': 27,     # Step pin for left motor
     },
     'right_motor': {
-        
         'dir_pin': 20,     # Direction pin for right motor
-        'step_pin': 21,     # step pin for right motor
+        'step_pin': 21,     # Step pin for right motor
     }
 }
 
 # Sensor pins configuration
 SENSOR_PINS = {
     'laser_range_forward': {
-        'rx_pin': 20,       # Serial RX pin for laser range finder (or use None for I2C/hardware UART)
-        'tx_pin': 21,       # Serial TX pin for laser range finder (or use None for I2C/hardware UART)
-        'uart_port': '/dev/ttyAMA0',  # Hardware UART port (alternative to GPIO pins)
+        'rx_pin': None,     # Serial RX pin for forward laser range finder
+        'tx_pin': None,     # Serial TX pin for forward laser range finder
+        'uart_port': '/dev/ttyAMA0',  # Hardware UART port 
         'i2c_address': 0x62   # I2C address if using I2C interface
     },
-    ## TODO: Add left and right laser range finder pins !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     'laser_range_left': {
-        'rx_pin': 20,       # Serial RX pin for laser range finder (or use None for I2C/hardware UART)
-        'tx_pin': 21,       # Serial TX pin for laser range finder (or use None for I2C/hardware UART)
-        'uart_port': '/dev/ttyAMA0',  # Hardware UART port (alternative to GPIO pins)
-        'i2c_address': 0x62   # I2C address if using I2C interface
+        'rx_pin': None,     # Serial RX pin for left laser range finder
+        'tx_pin': None,     # Serial TX pin for left laser range finder
+        'uart_port': None,  # Using I2C for side sensors
+        'i2c_address': 0x63   # I2C address - different from forward sensor
     },
     'laser_range_right': {
-        'rx_pin': 20,       # Serial RX pin for laser range finder (or use None for I2C/hardware UART)
-        'tx_pin': 21,       # Serial TX pin for laser range finder (or use None for I2C/hardware UART)
-        'uart_port': '/dev/ttyAMA0',  # Hardware UART port (alternative to GPIO pins)
-        'i2c_address': 0x62   # I2C address if using I2C interface
+        'rx_pin': None,     # Serial RX pin for right laser range finder
+        'tx_pin': None,     # Serial TX pin for right laser range finder
+        'uart_port': None,  # Using I2C for side sensors
+        'i2c_address': 0x64   # I2C address - different from other sensors
     },
     'compass': {
         'scl_pin': 3,       # I2C SCL pin for digital compass
@@ -47,7 +50,6 @@ SENSOR_PINS = {
 ROBOT_PARAMS = {
     'wheel_radius': 0.08,         # Wheel radius in meters
     'wheel_distance': 0.40244,    # Distance between wheels in meters
-    'encoder_ticks_per_rev': 20,  # Encoder ticks per wheel revolution
     'cleaning_unit_diameter': 0.3048,  # meters (12 inches)
     'path_overlap': 0.1016,       # meters (4 inches)
 }
@@ -57,8 +59,6 @@ MOTION_PARAMS = {
     'max_linear_speed': 0.6,      # meters/second
     'max_angular_speed': 0.5,     # radians/second
     'pwm_frequency': 1000,        # PWM frequency in Hz
-    'min_duty_cycle': 20,         # Minimum PWM duty cycle (to overcome friction)
-    'max_duty_cycle': 100         # Maximum PWM duty cycle
 }
 
 # Navigation parameters
@@ -66,7 +66,7 @@ NAVIGATION_PARAMS = {
     'waypoint_threshold': 0.1,    # meters (distance to consider waypoint reached)
     'heading_threshold': 0.05,    # radians (angle to consider heading aligned)
     'turn_threshold': 0.1,        # radians (angle to consider turn in place)
-    'safe_distance': 0.3,          # meters (minimum safe distance to obstacles)
+    'safe_distance': 0.3,         # meters (minimum safe distance to obstacles)
     'safe_side_distance': 0.2     # meters (minimum safe distance to side obstacles)
 }
 
