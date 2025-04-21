@@ -5,7 +5,7 @@ from utils.navigator import Navigator  # Reuse existing navigator class
 from utils.motionController import MotionController
 from utils.sensorManager import SensorManager
 from utils.pathPlanner import generate_cleaning_path, estimate_cleaning_time
-from robotConfig import DEFAULT_CLEANING_AREA, SYSTEM_PARAMS, NAVIGATION_PARAMS
+from robotConfig import DEFAULT_CLEANING_AREA, SYSTEM_PARAMS, NAVIGATION_PARAMS, SENSOR_MODE
 
 class RobotController:
     """Main robot controller for Raspberry Pi hardware implementation."""
@@ -15,14 +15,14 @@ class RobotController:
         print("Initializing Raspberry Pi Robot Controller...")
         
         # Initialize core components
-        self.sensor_manager = SensorManager()
+        self.sensor_manager = SensorManager(SENSOR_MODE)
         self.state = State()  # Pass None for robot and 0 for timestep (not used in hardware)
         self.motion_controller = MotionController()
         self.navigator = Navigator()  # Pass None for robot and 0 for timestep (not used in hardware)
         
         # Set up motor references for state
         left_motor, right_motor = self.motion_controller.get_motors()
-        self.state.set_motors(left_motor, right_motor)
+        #self.state.set_motors(left_motor, right_motor)
         
         # Set the cleaning area and navigation parameters
         self.navigator.waypoint_threshold = NAVIGATION_PARAMS['waypoint_threshold']
@@ -70,7 +70,7 @@ class RobotController:
     
     def _check_obstacles(self, sensor_data):
         """Check for obstacles using sensor data and handle if needed."""
-        if 'distance' not in sensor_data:
+        if 'distance' not in sensor_data and SENSOR_MODE['Three_lasers']:
             print("Warning: No laser range finder data available")
             return False
             

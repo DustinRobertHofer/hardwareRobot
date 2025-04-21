@@ -3,8 +3,8 @@
 # Sensor Mode
 SENSOR_MODE = {
     'Three_lasers': False,
-    'One_laser': True,
-    'No_lasers': False
+    'One_laser': False,
+    'No_lasers': True
 }
 
 # Motor pins configuration
@@ -42,7 +42,7 @@ SENSOR_PINS = {
     'compass': {
         'scl_pin': 3,       # I2C SCL pin for digital compass
         'sda_pin': 2,       # I2C SDA pin for digital compass
-        'address': 0x1E     # I2C address for HMC5883L digital compass
+        'address': 0x13     # I2C address for HMC5883L digital compass
     }
 }
 
@@ -64,9 +64,9 @@ MOTION_PARAMS = {
 
 # Navigation parameters
 NAVIGATION_PARAMS = {
-    'waypoint_threshold': 0.1,    # meters (distance to consider waypoint reached)
-    'heading_threshold': 0.05,    # radians (angle to consider heading aligned)
-    'turn_threshold': 0.1,        # radians (angle to consider turn in place)
+    'waypoint_threshold': 0.2,    # meters (distance to consider waypoint reached)
+    'heading_threshold': 0.2,    # radians (angle to consider heading aligned)
+    'turn_threshold': 0.2,        # radians (angle to consider turn in place)
     'safe_distance': 0.3,         # meters (minimum safe distance to obstacles)
     'safe_side_distance': 0.2     # meters (minimum safe distance to side obstacles)
 }
@@ -80,7 +80,7 @@ SYSTEM_PARAMS = {
 # Default cleaning area (in meters) - rectangular area
 DEFAULT_CLEANING_AREA = [
     {'x': 0.0, 'y': 0.0},    # Starting point
-    {'x': 2.8, 'y': 0.0},    # Right edge
-    {'x': 2.8, 'y': 3.0},    # Top-right corner
-    {'x': 0.0, 'y': 3.0},    # Top-left corner
+    {'x': 0.7, 'y': 0.0},    # Right edge
+    {'x': 0.7, 'y': 0.8},    # Top-right corner
+    {'x': 0.0, 'y': 0.8},    # Top-left corner
 ] 

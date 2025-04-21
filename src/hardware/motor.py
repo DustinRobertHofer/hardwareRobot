@@ -86,7 +86,7 @@ class Motors:
             time.sleep(delay)
 
             # step logging
-            if self.direction1 == 'CW':
+            if self.direction1 == 'CCW':
                 self.motor1_steps += 1
             else:
                 self.motor1_steps -= 1
@@ -94,7 +94,7 @@ class Motors:
             # Print steps less frequently (every 100 steps)
             self.log_counter1 += 1
             if self.log_counter1 >= 100:
-                print(f"Motor 1 steps: {self.motor1_steps}")
+                #print(f"Motor 1 steps: {self.motor1_steps}")
                 self.log_counter1 = 0
 
     def run_motor2_continuously(self):
@@ -125,16 +125,16 @@ class Motors:
             # Print steps less frequently (every 100 steps)
             self.log_counter2 += 1
             if self.log_counter2 >= 100:
-                print(f"Motor 2 steps: {self.motor2_steps}")
+                #print(f"Motor 2 steps: {self.motor2_steps}")
                 self.log_counter2 = 0
 
 
     def set_motor1_speed(self, speed_rpm):
         # Determine direction of rotation
         if speed_rpm > 0:
-            self.direction1 = 'CW'
-        else:
             self.direction1 = 'CCW'
+        else:
+            self.direction1 = 'CW'
             speed_rpm = -speed_rpm
 
         with self.speed_lock1:
@@ -179,6 +179,9 @@ class Motor:
         self.motor_name = motor_name
         self.rpm_to_rad_per_sec = 2 * 3.14159 / 60  # Conversion factor
         
+        # Track previous rotation value to calculate deltas
+        self.previous_rotation = self.motors.get_rotations(self.motor_name) 
+           
     def set_velocity(self, velocity_rad_per_sec):
         """
         Set motor velocity in radians per second.
@@ -195,8 +198,11 @@ class Motor:
         self.motors.set_speed(self.motor_name, 0)
         
     def get_distance(self):
-        """Get distance in rotations."""
-        return self.motors.get_rotations(self.motor_name)
+        """Get distance traveled since last call (in rotations)."""
+        current_rotation = self.motors.get_rotations(self.motor_name)
+        delta_rotation = current_rotation - self.previous_rotation
+        self.previous_rotation = current_rotation
+        return delta_rotation
         
     def cleanup(self):
         """Clean up resources."""

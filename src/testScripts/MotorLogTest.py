@@ -7,8 +7,8 @@ Dir_pin1 = 20
 Step_pin1 = 21
 
 # Define GPIO pins for motor 2  
-Dir_pin2 = 27
-Step_pin2 = 17
+Dir_pin2 = 17
+Step_pin2 = 27
 
 # Setup GPIO
 GPIO.setmode(GPIO.BCM)

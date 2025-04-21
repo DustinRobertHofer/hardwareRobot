@@ -3,8 +3,8 @@ import time
 import threading
 
 # Define GPIO pins for motor 1
-Dir_pin1 = 20
-Step_pin1 = 21
+Dir_pin1 = 17
+Step_pin1 = 27
 
 
 # Setup GPIO

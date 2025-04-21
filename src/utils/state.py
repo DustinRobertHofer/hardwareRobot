@@ -1,5 +1,5 @@
 from math import cos, sin, pi
-from hardware.motors import Motor  # Import Motor class for type hints
+
 
 
 class State:
@@ -13,19 +13,11 @@ class State:
         self.prev_theta = 0.0
         self.TURN_THRESHOLD = 0.01  # About 0.57 degrees in radians
         
-        # Motors for distance data
-        self.left_motor = None
-        self.right_motor = None
-        
+
         # Default obstacle data
         self.obstacle_detected = False
         self.obstacle_distance = float('inf')
-        
-    def set_motors(self, left_motor, right_motor):
-        """Set motor objects for direct distance measurement"""
-        self.left_motor = left_motor
-        self.right_motor = right_motor
-        
+
     def update(self, sensor_data):
         """Update state estimation using sensor data"""
         # Get sensor readings
@@ -41,12 +33,16 @@ class State:
         
         # Get distance data directly from motors if available
         forward_motion = 0
-        if self.left_motor and self.right_motor:
-            delta_left = self.left_motor.get_delta_distance()
-            delta_right = self.right_motor.get_delta_distance()
+        if wheel_data['delta_left'] and wheel_data['delta_right']:
+            # Use wheel_data deltas that were already captured in SensorManager
+            # This prevents calling get_distance() multiple times which resets internal tracking
+            delta_left = wheel_data['delta_left']
+            delta_right = wheel_data['delta_right']
             forward_motion = (delta_left + delta_right) / 2
+            print(f"Forward motion: {forward_motion}")
         else:
             # Fall back to sensor data if motors not set
+            print("No motors set")
             forward_motion = wheel_data['forward_motion']
             
         # Only update position if not turning
@@ -85,4 +81,4 @@ class State:
         self.x = 0.0
         self.y = 0.0
         self.theta = 0.0
-        self.prev_theta = 0.0 
+        self.prev_theta = 0.0

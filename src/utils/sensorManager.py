@@ -90,16 +90,16 @@ class SensorManager:
     def set_wheel_data(self, left_motor, right_motor):
         """Update wheel data from motor ."""
         # Get delta distances from motor 
-        delta_left = left_motor.get_delta_distance()
-        delta_right = right_motor.get_delta_distance()
+        delta_left = left_motor.get_distance()
+        delta_right = right_motor.get_distance()
         
         # Calculate forward motion (average of wheels)
         forward_motion = (delta_left + delta_right) / 2
         
         # Update wheel data
         self.wheel_data = {
-            'left_distance': left_motor.get_distance(),
-            'right_distance': right_motor.get_distance(),
+            'left_distance': 0,
+            'right_distance': 0,
             'delta_left': delta_left,
             'delta_right': delta_right,
             'forward_motion': forward_motion
@@ -115,7 +115,7 @@ class SensorManager:
     
     def cleanup(self):
         """Clean up all sensor resources."""
-        self.laser_range_forward.cleanup()
-        self.laser_range_left.cleanup()
-        self.laser_range_right.cleanup()
+        #self.laser_range_forward.cleanup()
+        #self.laser_range_left.cleanup()
+        #self.laser_range_right.cleanup()
         self.compass.cleanup() 
