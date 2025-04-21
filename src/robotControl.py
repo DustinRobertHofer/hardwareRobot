@@ -21,7 +21,7 @@ class RobotController:
         self.navigator = Navigator()  # Pass None for robot and 0 for timestep (not used in hardware)
         
         # Set up motor references for state
-        left_motor, right_motor = self.motion_controller.get_motors()
+        #left_motor, right_motor = self.motion_controller.get_motors()
         #self.state.set_motors(left_motor, right_motor)
         
         # Set the cleaning area and navigation parameters
@@ -94,9 +94,10 @@ class RobotController:
         
         # Get wheel data from motors
         wheel_data = self.motion_controller.get_wheel_data()
+        print(f"Wheel data: {wheel_data['left_distance']}, {wheel_data['right_distance']}, {wheel_data['forward_distance']}")
         
         # Update sensor readings
-        self.sensor_manager.update(wheel_data)
+        self.sensor_manager.update()
         sensor_data = self.sensor_manager.get_sensor_data()
         
         # Update state - State will get distance data directly from motors
