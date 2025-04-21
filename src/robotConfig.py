@@ -59,6 +59,7 @@ MOTION_PARAMS = {
     'max_linear_speed': 0.6,      # meters/second
     'max_angular_speed': 0.5,     # radians/second
     'pwm_frequency': 1000,        # PWM frequency in Hz
+    'steps_per_revolution': 200,  # Steps per revolution for the motor
 }
 
 # Navigation parameters
