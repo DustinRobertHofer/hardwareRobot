@@ -202,7 +202,9 @@ class Motor:
         current_rotation = self.motors.get_rotations(self.motor_name)
         delta_rotation = current_rotation - self.previous_rotation
         self.previous_rotation = current_rotation
-        return delta_rotation
+        #convert to meters
+        distance = delta_rotation * MOTION_PARAMS['wheel_radius']
+        return distance
         
     def cleanup(self):
         """Clean up resources."""

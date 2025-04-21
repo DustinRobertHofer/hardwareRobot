@@ -61,7 +61,10 @@ class MotionController:
         return {
             'left_distance': left_distance,
             'right_distance': right_distance,
-            'forward_distance': forward_distance
+            'forward_distance': forward_distance,
+            'delta_left': left_distance,
+            'delta_right': right_distance,
+            'forward_motion': forward_distance
         }
     
     def _limit_value(self, value, min_value, max_value):

@@ -64,7 +64,7 @@ class SensorManager:
             distance_right = None
         
         # Get compass heading
-        compass_heading = self.compass.get_bearing()
+        compass_heading = self.compass.normalize_bearing(self.compass.get_bearing())
         
         # Combine all sensor data
         self.sensor_data = {
@@ -112,6 +112,12 @@ class SensorManager:
     def calibrate_compass(self):
         """Calibrate the digital compass."""
         self.compass.calibrate()
+        self.compass_offset = self.compass.normalize_bearing(self.compass.get_bearing())
+
+    def normalize_bearing(self, bearing):
+        """Set the intitial bearing to 0."""
+        self.compass_offset = bearing
+        
     
     def cleanup(self):
         """Clean up all sensor resources."""
