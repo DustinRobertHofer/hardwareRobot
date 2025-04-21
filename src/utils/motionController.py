@@ -65,9 +65,10 @@ class MotionController:
         """Get distance traveled by the robot."""
         return self.left_motor.get_distance()
     
-
     def cleanup(self):
         """Clean up resources."""
         self.stop()
-        self.left_motor.cleanup()
-        self.right_motor.cleanup() 
+        # Import here to avoid circular imports
+        from hardware.motor import _motors_instance
+        if _motors_instance is not None:
+            _motors_instance.cleanup() 

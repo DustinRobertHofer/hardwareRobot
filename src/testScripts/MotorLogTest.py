@@ -117,8 +117,8 @@ def set_motor2_speed(speed_rpm):
 if __name__ == "__main__":
     try:
         # Set initial direction
-        #GPIO.output(Dir_pin1, False)
-        #GPIO.output(Dir_pin2, False)
+        GPIO.output(Dir_pin1, False)
+        GPIO.output(Dir_pin2, False)
         
         # Start motor control threads
         motor1_thread = threading.Thread(target=run_motor1_continuously, daemon=True)

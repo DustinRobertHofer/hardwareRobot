@@ -1,5 +1,5 @@
 from math import cos, sin, pi
-from hardware.motor import Motor  # Import Motor class for type hints
+from hardware.motors import Motor  # Import Motor class for type hints
 
 
 class State:
