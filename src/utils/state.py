@@ -18,10 +18,10 @@ class State:
         self.obstacle_detected = False
         self.obstacle_distance = float('inf')
 
-    def update(self, sensor_data):
+    def update(self, sensor_data, wheel_data):
         """Update state estimation using sensor data"""
         # Get sensor readings
-        wheel_data = sensor_data['wheel_data']
+        # wheel_data = sensor_data['wheel_data']
         compass_heading = sensor_data['compass_heading']
         
         # Update heading

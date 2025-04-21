@@ -27,13 +27,13 @@ class SensorManager:
         self.update_interval = 0.05  # 50ms update interval
         
         # Track wheel data (this would be obtained from the motors)
-        self.wheel_data = {
-            'left_distance': 0,
-            'right_distance': 0,
-            'delta_left': 0,
-            'delta_right': 0,
-            'forward_motion': 0
-        }
+        # self.wheel_data = {
+        #     'left_distance': 0,
+        #     'right_distance': 0,
+        #     'delta_left': 0,
+        #     'delta_right': 0,
+        #     'forward_motion': 0
+        # }
         
         # Perform initial sensor update
         self.update()
@@ -68,7 +68,7 @@ class SensorManager:
         
         # Combine all sensor data
         self.sensor_data = {
-            'wheel_data': self.wheel_data,
+            # 'wheel_data': self.wheel_data,
             'compass_heading': compass_heading
         }
         
@@ -87,23 +87,23 @@ class SensorManager:
             self.sensor_data['distance_right'] = 10.0
         
 
-    def set_wheel_data(self, left_motor, right_motor):
-        """Update wheel data from motor ."""
-        # Get delta distances from motor 
-        delta_left = left_motor.get_distance()
-        delta_right = right_motor.get_distance()
+    # def set_wheel_data(self, left_motor, right_motor):
+    #     """Update wheel data from motor ."""
+    #     # Get delta distances from motor 
+    #     delta_left = left_motor.get_distance()
+    #     delta_right = right_motor.get_distance()
         
-        # Calculate forward motion (average of wheels)
-        forward_motion = (delta_left + delta_right) / 2
+    #     # Calculate forward motion (average of wheels)
+    #     forward_motion = (delta_left + delta_right) / 2
         
-        # Update wheel data
-        self.wheel_data = {
-            'left_distance': 0,
-            'right_distance': 0,
-            'delta_left': delta_left,
-            'delta_right': delta_right,
-            'forward_motion': forward_motion
-        }
+    #     # Update wheel data
+    #     self.wheel_data = {
+    #         'left_distance': 0,
+    #         'right_distance': 0,
+    #         'delta_left': delta_left,
+    #         'delta_right': delta_right,
+    #         'forward_motion': forward_motion
+    #     }
     
     def get_sensor_data(self):
         """Return the latest sensor readings."""
